@@ -35,8 +35,8 @@ class ImageStageModel with ChangeNotifier {
   }
 
   append() async {
-    final value = await ImageFetcher.fetchRemote(
-        graph: 'recent', num: 50, untilId: _oldestId);
+    final value =
+        await ImageFetcher.fetchRemote(graph: 'recent', untilId: _oldestId);
     _oldestId = value.sinceId;
     final cacahedURIs = await ImageCacher.read();
     _appendURIs(cacahedURIs, value.uris);

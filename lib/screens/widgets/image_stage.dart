@@ -62,6 +62,14 @@ class _ImageStageState extends State<ImageStage> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  _getVocalImage() {
+    final VocalImage vocalImage = this._images != null
+        ? this._images[this._currentIndex]
+        : new VocalImage('assets/images/pic1.jpg', 'pic1', 0, network: false);
+
+    return vocalImage;
+  }
+
   _setImages({List<VocalImage> vocalImages}) async {
     if (vocalImages != null) {
       setState(() {
@@ -80,34 +88,6 @@ class _ImageStageState extends State<ImageStage> with TickerProviderStateMixin {
         });
       }
     }
-  }
-
-  _onPlayTap(BuildContext context) {
-    if (!this._fromFav) {
-      setState(() {
-        this._playing = !this._playing;
-
-        if (this._playing) {
-          controller.forward();
-        } else {
-          controller.stop();
-        }
-      });
-    }
-  }
-
-  _onLikeTap(BuildContext context, VocalImage vocalImage) {
-    setState(() {
-      vocalImage.liked = vocalImage.liked != null ? !vocalImage.liked : true;
-      if (vocalImage.liked != null && vocalImage.liked) {
-        Provider.of<Favorites>(context, listen: false).add(vocalImage);
-      } else {
-        Provider.of<Favorites>(context, listen: false).remove(vocalImage);
-      }
-    });
-
-    // nav from fav
-    if (this._fromFav) Navigator.pop(context);
   }
 
   _setFromArgs(ImageStageArguments args) async {
@@ -142,6 +122,34 @@ class _ImageStageState extends State<ImageStage> with TickerProviderStateMixin {
     });
   }
 
+  _onPlayTap(BuildContext context) {
+    if (!this._fromFav) {
+      setState(() {
+        this._playing = !this._playing;
+
+        if (this._playing) {
+          controller.forward();
+        } else {
+          controller.stop();
+        }
+      });
+    }
+  }
+
+  _onLikeTap(BuildContext context, VocalImage vocalImage) {
+    setState(() {
+      vocalImage.liked = vocalImage.liked != null ? !vocalImage.liked : true;
+      if (vocalImage.liked != null && vocalImage.liked) {
+        Provider.of<Favorites>(context, listen: false).add(vocalImage);
+      } else {
+        Provider.of<Favorites>(context, listen: false).remove(vocalImage);
+      }
+    });
+
+    // nav from fav
+    if (this._fromFav) Navigator.pop(context);
+  }
+
   _onSwipe(DragEndDetails dragEndDetails) {
     print('_onSwipe - detials: ${dragEndDetails.primaryVelocity}');
     if (dragEndDetails.primaryVelocity > 50.0) {
@@ -155,6 +163,32 @@ class _ImageStageState extends State<ImageStage> with TickerProviderStateMixin {
     if (dragDownDetails.primaryVelocity > 200.0) {
       print('_onDragDown - about to got back');
     }
+  }
+
+  Widget _imageStageElement(BuildContext context, VocalImage vocalImage) {
+    return Container(
+      decoration: BoxDecoration(color: Colors.black),
+      margin: const EdgeInsets.all(0),
+      child: Stack(
+        children: [
+          Center(child: CircularProgressIndicator()),
+          GestureDetector(
+            onTap: () => _onPlayTap(context),
+            onDoubleTap: () => _onLikeTap(context, vocalImage),
+            onHorizontalDragEnd: _onSwipe,
+            onVerticalDragEnd: _onDragDown,
+            child: InteractiveViewer(
+              child: Center(
+                child: FadeInImage.memoryNetwork(
+                  placeholder: kTransparentImage,
+                  image: vocalImage.url,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   List<Widget> _icons(BuildContext context, VocalImage vocalImage) {
@@ -210,9 +244,7 @@ class _ImageStageState extends State<ImageStage> with TickerProviderStateMixin {
 
     if (_images == null) _setFromArgs(args);
 
-    final VocalImage vocalImage = this._images != null
-        ? this._images[this._currentIndex]
-        : new VocalImage('assets/images/pic1.jpg', 'pic1', 0, network: false);
+    final VocalImage vocalImage = _getVocalImage();
 
     return Scaffold(
       appBar: AppBar(
@@ -220,68 +252,11 @@ class _ImageStageState extends State<ImageStage> with TickerProviderStateMixin {
       ),
       backgroundColor: Colors.black,
       body: Builder(
-        builder: (ctx) => Stack(
+        builder: (_) => Stack(
           children: [
             Align(
               alignment: Alignment.center,
-              child: Container(
-                decoration: BoxDecoration(color: Colors.black),
-                margin: const EdgeInsets.all(0),
-                child: Stack(
-                  children: [
-                    Center(child: CircularProgressIndicator()),
-                    GestureDetector(
-                      onTap: () => _onPlayTap(context),
-                      onDoubleTap: () => _onLikeTap(context, vocalImage),
-                      onHorizontalDragEnd: _onSwipe,
-                      onVerticalDragEnd: _onDragDown,
-                      child: InteractiveViewer(
-                        child: Center(
-                            child: FadeInImage.memoryNetwork(
-                          placeholder: kTransparentImage,
-                          image: vocalImage.url,
-                        )),
-                      ),
-                      // child: Center(
-                      //     child: FadeInImage.memoryNetwork(
-                      //   placeholder: kTransparentImage,
-                      //   image: vocalImage.url,
-                      // )),
-                    ),
-                    // Draggable<String>(
-                    //   data: vocalImage.url,
-                    //   child: GestureDetector(
-                    //     onTap: () => _onPlayTap(context),
-                    //     onDoubleTap: () => _onLikeTap(context, vocalImage),
-                    //     onHorizontalDragEnd: _onSwipe,
-                    //     child: InteractiveViewer(
-                    //       child: Center(
-                    //           child: FadeInImage.memoryNetwork(
-                    //         placeholder: kTransparentImage,
-                    //         image: vocalImage.url,
-                    //       )),
-                    //     ),
-                    //     // child: Center(
-                    //     //     child: FadeInImage.memoryNetwork(
-                    //     //   placeholder: kTransparentImage,
-                    //     //   image: vocalImage.url,
-                    //     // )),
-                    //   ),
-                    //   feedback: Container(
-                    //     height: MediaQuery.of(context).size.height,
-                    //     width: MediaQuery.of(context).size.width,
-                    //     child: Center(
-                    //       child: FadeInImage.memoryNetwork(
-                    //         placeholder: kTransparentImage,
-                    //         image: vocalImage.url,
-                    //       ),
-                    //     ),
-                    //   ),
-                    //   childWhenDragging: Container(color: Colors.black),
-                    // ),
-                  ],
-                ),
-              ),
+              child: _imageStageElement(context, vocalImage),
             ),
             Align(
               alignment: Alignment.bottomCenter,
