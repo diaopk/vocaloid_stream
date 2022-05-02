@@ -1,0 +1,25 @@
+{
+	"APIKey": "1So3cP3fCuMEMvV694tCM1FfL",
+	"APISecretKey": "frTvzY4Y2Gcxjv9QIeYt741B6M4NDZwdXhjzwFUqAUTUCaKQAf",
+	"BearerToken": "AAAAAAAAAAAAAAAAAAAAALxyRgEAAAAAeiDv%2BkX9CDOsD3RAnSV8x0hiPPE%3DObR0ahCbdvjaEthLxUABU9yELQgXQ61F1TjhK341CoGEFleCgM",
+	"data": {
+		"attachments": {
+			"media_keys": [
+				"3_1416914182662983684"
+			]
+		},
+		"id": "1416915026150100996",
+		"text": "her #fe3h https://t.co/emfgtWOcBi"
+	},
+	"includes": {
+		"media": [
+			{
+				"type": "photo",
+				"url": "https://pbs.twimg.com/media/E6nj8SbXEAQfulL.jpg",
+				"width": 1200,
+				"height": 1540,
+				"media_key": "3_1416914182662983684"
+			}
+		]
+	}
+}
