@@ -2,22 +2,19 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:vocaloid_stream/models/all.dart';
 import 'package:http/http.dart' as http;
+import 'package:vocaloid_stream/utils/all.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class ImageFetcher {
-  static const List<String> _TAGS = [
-    "%23gawrt",
-    // "%23IRySart",
-    // "%23artsofashes",
-    // "%23callillust",
-    // "%23inart",
-    // "%23ameliaRT"
-  ];
+  static Future<String> _loadTags() async {
+    final config = await loadJSON('assets/config.json');
+    return config['kronii']['tag'];
+  }
 
   static const TWITTER_URI =
       'https://api.twitter.com/2/tweets?ids=1228393702244134912,1227640996038684673,1199786642791452673&tweet.fields=created_at&expansions=author_id&user.fields=created_at';
 
-  static String query(String endpoint, {TwitterQueryParams params}) {
+  static String _query(String endpoint, {TwitterQueryParams params}) {
     assert(endpoint == 'recent' || endpoint == 'all',
         'endpoint must be either recent or all');
 
@@ -41,7 +38,7 @@ class ImageFetcher {
   }
 
   static Future<List<String>> fetchLocal({int num}) async {
-    return await [
+    final values = [
       'assets/images/pic1.jpg',
       'assets/images/pic2.jpg',
       'assets/images/pic3.jpg',
@@ -51,6 +48,7 @@ class ImageFetcher {
       'assets/images/pic7.jpg',
       'assets/images/pic8.jpg',
     ].sublist(0, num != null ? num : 8);
+    return Future.value(values);
   }
 
   static Future<FetchRemoteRes> fetchRemote({
@@ -59,30 +57,33 @@ class ImageFetcher {
     String since,
     String untilId,
   }) async {
-    final auth = await _loadAuthJSON();
-    final uri = query(graph,
-        params: new TwitterQueryParams(_TAGS.join(' '),
-            expansions: [
-              'attachments.poll_ids',
-              // 'author_id',
-              'attachments.media_keys'
-            ],
-            sinceId: since,
-            untilId: untilId,
-            mediaFeidls: [
-              'duration_ms',
-              'height',
-              'media_key',
-              'preview_image_url',
-              'type',
-              'url',
-              'width',
-              'public_metrics',
-              'non_public_metrics',
-              'organic_metrics',
-              'promoted_metrics'
-            ],
-            maxResults: num));
+    final auth = await loadJSON('assets/twitter_auth.json');
+    final tags = await _loadTags();
+    final uri = _query(
+      graph,
+      params: new TwitterQueryParams(tags,
+          expansions: [
+            'attachments.poll_ids',
+            // 'author_id',
+            'attachments.media_keys'
+          ],
+          sinceId: since,
+          untilId: untilId,
+          mediaFeidls: [
+            'duration_ms',
+            'height',
+            'media_key',
+            'preview_image_url',
+            'type',
+            'url',
+            'width',
+            'public_metrics',
+            'non_public_metrics',
+            'organic_metrics',
+            'promoted_metrics'
+          ],
+          maxResults: num),
+    );
 
     print('imageFetcher - fetcheRemote - uri: $uri');
 
@@ -105,11 +106,6 @@ List<String> _getMediaURLs(TwitterAPIResponse twitterAPIResponse) {
       .where((el) => el.url != null)
       .map((e) => e.url)
       .toList();
-}
-
-Future<dynamic> _loadAuthJSON() async {
-  final String res = await rootBundle.loadString('assets/twitter_auth.json');
-  return json.decode(res);
 }
 
 class FetchRemoteRes {

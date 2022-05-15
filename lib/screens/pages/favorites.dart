@@ -31,7 +31,7 @@ class FavoritesPage extends StatelessWidget {
       return Material(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
         clipBehavior: Clip.antiAlias,
-        child: ImageSection(
+        child: ImageGridItem(
           map.value,
           true,
           vocalImages: vocalImages,

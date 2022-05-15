@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vocaloid_stream/models/all.dart';
-import 'package:vocaloid_stream/services/image_fetcher.dart';
 import 'package:provider/provider.dart';
 import 'all.dart';
 
@@ -10,7 +9,6 @@ class ImageGrid extends StatefulWidget {
 }
 
 class _ImageGridState extends State<ImageGrid> {
-  List<VocalImage> _vocalImages;
   ScrollController _controller = ScrollController();
   BuildContext _context;
 
@@ -27,18 +25,19 @@ class _ImageGridState extends State<ImageGrid> {
     });
   }
 
-  List<Widget> _imageSections(
+  List<Widget> _imageGridItems(
       BuildContext context, List<VocalImage> vocalImages) {
     return vocalImages != null
         ? vocalImages
             .asMap()
             .entries
             .map((map) => Material(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                clipBehavior: Clip.antiAlias,
-                child: ImageSection(map.value, false)))
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  child: ImageGridItem(map.value, false),
+                ))
             .toList()
         : [];
   }
@@ -55,7 +54,7 @@ class _ImageGridState extends State<ImageGrid> {
         mainAxisSpacing: 1,
         crossAxisCount: 2,
         controller: _controller,
-        children: _imageSections(
+        children: _imageGridItems(
             context, context.watch<ImageStageModel>().vocalImages),
       ),
     );

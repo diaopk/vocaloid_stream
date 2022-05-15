@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: ImageGrid(),
+      drawer: HomeDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _onFloatingButtonPress(context),
         child: const Icon(Icons.refresh_outlined),

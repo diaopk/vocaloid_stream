@@ -156,11 +156,12 @@ class _ImageStageState extends State<ImageStage> with TickerProviderStateMixin {
     if (this._fromFav) Navigator.pop(context);
   }
 
-  _onSwipe(DragEndDetails dragEndDetails) {
-    print('_onSwipe - detials: ${dragEndDetails.primaryVelocity}');
-    if (dragEndDetails.primaryVelocity > 50.0) {
+  _onSwipe(DragEndDetails details) {
+    print('_onSwipe - detials: ${details.velocity.pixelsPerSecond}');
+    // print('_onSwipe - detials: ${dragEndDetails.primaryVelocity}');
+    if (details.primaryVelocity > 50.0) {
       _onPrevious();
-    } else if (dragEndDetails.primaryVelocity < -50.0) {
+    } else if (details.primaryVelocity < -50.0) {
       _onNext();
     }
   }
@@ -181,7 +182,13 @@ class _ImageStageState extends State<ImageStage> with TickerProviderStateMixin {
           GestureDetector(
             onTap: () => _onPlayTap(context),
             onDoubleTap: () => _onLikeTap(context, vocalImage),
+            onHorizontalDragStart: (details) {
+              print('onHorizontalDragStart - detials: ${details}');
+            },
             onHorizontalDragEnd: _onSwipe,
+            onHorizontalDragUpdate: (details) {
+              // print('onHorizontalDragUpdate - detials: ${details}');
+            },
             onVerticalDragEnd: _onDragDown,
             child: InteractiveViewer(
               child: Center(

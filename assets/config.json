@@ -1,0 +1,57 @@
+{
+	"gura": {
+		"tag": "%23gawrt",
+		"label": "Gawr Gura",
+		"icon": ""
+	},
+	"ina": {
+		"tag": "%23inart",
+		"label": "Ninomae Ina'nis",
+		"icon": ""
+	},
+	"watson": {
+		"tag": "%23ameliaRT",
+		"label": "Watson Amelia",
+		"icon": ""
+	},
+	"calli": {
+		"tag": "%23callillust",
+		"label": "Mori Calliope",
+		"icon": ""
+	},
+	"kiara": {
+		"tag": "%23artsofashes",
+		"label": "Takanashi Kiara",
+		"icon": ""
+	},
+	"fauna": {
+		"tag": "%23FineFaunart",
+		"label": "Ceres Fauna",
+		"icon": ""
+	},
+	"sana": {
+		"tag": "%23galaxillust",
+		"label": "Tsukumo Sana ",
+		"icon": ""
+	},
+	"kronii": {
+		"tag": "%23kronillust",
+		"label": "Ouro Kronii",
+		"icon": ""
+	},
+	"mumei": {
+		"tag": "%23drawingMEI",
+		"label": "Nanashi Mumei",
+		"icon": ""
+	},
+	"bae": {
+		"tag": "%23illustrayBAE",
+		"label": "Hakos Baelz",
+		"icon": ""
+	},
+	"irys": {
+		"tag": "%23IRySart",
+		"label": "IRyS",
+		"icon": ""
+	}
+}
