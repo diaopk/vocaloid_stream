@@ -97,44 +97,6 @@ class ImageFetcher {
 
     return new FetchRemoteRes(
         _getMediaURLs(twitterAPIResponse), twitterAPIResponse.meta.oldest_id);
-    // return _getMediaURLs(twitterAPIResponse);
-
-    // .then((res) {
-    //   final body = json.decode(res.body);
-    //   final twitterRes = new TwitterAPIResponse.fromJSON(
-    //       data: body['data'], includes: body['includes'], meta: body['meta']);
-    //   print(
-    //       'imageFetcher - fetchRemote - mediaList: ${twitterRes.includes.mediaList}');
-    //   return twitterRes.includes.mediaList.where((el) => el.url != null).map((e) => e.url);
-    // }).catchError((error) {
-    //   print('imageFetcher - fetchRemote - error: $error');
-    //   // ignore: return_of_invalid_type_from_catch_error
-    //   return [
-    //     "https://pbs.twimg.com/media/E6A7URBVkAMKnz3?format=jpg&name=medium",
-    //     "https://pbs.twimg.com/media/E5wc_1wUUAEjIZy?format=jpg&name=medium",
-    //     "https://pbs.twimg.com/media/E5sQx9OUUAAz36-?format=jpg&name=medium",
-    //     "https://pbs.twimg.com/media/E5iDqqcVEAAzp5Z?format=jpg&name=medium",
-    //     "https://pbs.twimg.com/media/E5NneTwWQAMxxj8?format=jpg&name=medium",
-    //     "https://pbs.twimg.com/media/E498v2-UUAgwo22?format=jpg&name=medium",
-    //     "https://pbs.twimg.com/media/E4-K2BPWYAc307Y?format=jpg&name=medium",
-    //     "https://pbs.twimg.com/media/E4kjaPLXEAMQH5d?format=jpg&name=medium",
-    //     "https://pbs.twimg.com/media/E4Yk5YLXEAI76IO?format=jpg&name=medium",
-    //     "https://pbs.twimg.com/media/E4U8zNcUUAAuyHB?format=jpg&name=medium",
-    //     "https://pbs.twimg.com/media/E4ORdy2UYAIJe3W?format=jpg&name=medium"
-
-    //     // "https://pbs.twimg.com/media/E6A7URBVkAMKnz3?format=jpg&name=medium",
-    //     // "https://pbs.twimg.com/media/E5wc_1wUUAEjIZy?format=jpg&name=large",
-    //     // "https://pbs.twimg.com/media/E5sQx9OUUAAz36-?format=jpg&name=large",
-    //     // "https://pbs.twimg.com/media/E5iDqqcVEAAzp5Z?format=jpg&name=4096x4096",
-    //     // "https://pbs.twimg.com/media/E5NneTwWQAMxxj8?format=jpg&name=large",
-    //     // "https://pbs.twimg.com/media/E498v2-UUAgwo22?format=jpg&name=large",
-    //     // "https://pbs.twimg.com/media/E4-K2BPWYAc307Y?format=jpg&name=4096x4096",
-    //     // "https://pbs.twimg.com/media/E4kjaPLXEAMQH5d?format=jpg&name=4096x4096",
-    //     // "https://pbs.twimg.com/media/E4Yk5YLXEAI76IO?format=jpg&name=medium",
-    //     // "https://pbs.twimg.com/media/E4U8zNcUUAAuyHB?format=jpg&name=4096x4096",
-    //     // "https://pbs.twimg.com/media/E4ORdy2UYAIJe3W?format=jpg&name=large"
-    //   ].sublist(0, num != null ? num : 8);
-    // });
   }
 }
 

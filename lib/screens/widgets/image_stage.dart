@@ -70,6 +70,12 @@ class _ImageStageState extends State<ImageStage> with TickerProviderStateMixin {
     return vocalImage;
   }
 
+  _setStateFromBuildContext(BuildContext context) {
+    final ImageStageArguments args = ModalRoute.of(context).settings.arguments;
+
+    if (_images == null) _setFromArgs(args);
+  }
+
   _setImages({List<VocalImage> vocalImages}) async {
     if (vocalImages != null) {
       setState(() {
@@ -240,10 +246,7 @@ class _ImageStageState extends State<ImageStage> with TickerProviderStateMixin {
   }
 
   Widget build(BuildContext context) {
-    final ImageStageArguments args = ModalRoute.of(context).settings.arguments;
-
-    if (_images == null) _setFromArgs(args);
-
+    _setStateFromBuildContext(context);
     final VocalImage vocalImage = _getVocalImage();
 
     return Scaffold(

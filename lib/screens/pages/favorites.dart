@@ -11,6 +11,21 @@ class FavoritesPage extends StatelessWidget {
   static String routeName = '/favorites';
   static String tiileName = 'My favs';
 
+  Widget _getFutureFavorites(
+      BuildContext context, AsyncSnapshot<List<VocalImage>> snapshot) {
+    if (snapshot.hasData) {
+      return GridView.count(
+        crossAxisCount: 2,
+        children: _favChild(context, snapshot.data),
+      );
+    } else if (snapshot.hasError) {
+      print('favPage - build - err: ${snapshot.error}');
+      return Center(child: Text('Please try again later'));
+    } else {
+      return Center(child: Text('Find your favorites'));
+    }
+  }
+
   List<Widget> _favChild(BuildContext context, List<VocalImage> vocalImages) {
     return vocalImages.asMap().entries.map((map) {
       return Material(
@@ -30,22 +45,11 @@ class FavoritesPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('My favs')),
       body: Consumer<Favorites>(
-          builder: (context, value, child) => FutureBuilder(
-              future: value.items,
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<VocalImage>> snapshot) {
-                if (snapshot.hasData) {
-                  return GridView.count(
-                    crossAxisCount: 2,
-                    children: _favChild(context, snapshot.data),
-                  );
-                } else if (snapshot.hasError) {
-                  print('favPage - build - err: ${snapshot.error}');
-                  return Center(child: Text('Find your favs'));
-                } else {
-                  return Center(child: Text('Find your favs'));
-                }
-              })),
+        builder: (context, value, child) => FutureBuilder(
+          future: value.items,
+          builder: _getFutureFavorites,
+        ),
+      ),
     );
   }
 }
